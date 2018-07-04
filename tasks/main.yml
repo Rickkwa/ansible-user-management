@@ -1,0 +1,13 @@
+---
+
+- name: Include user inventory
+  include_vars:
+    file: users.yml
+    name: user_inventory
+
+- name: Loop through user inventory and handle users
+  include_tasks: "handle_user.yml"
+  # TODO: when the current host is in a host group that the user is targetting (ie. present | diff absent)
+  loop: "{{ user_inventory }}"
+  loop_control:
+    loop_var: current_user

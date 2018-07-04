@@ -1,0 +1,4 @@
+---
+
+# The UID to start at when creating users
+uid_base: 10000

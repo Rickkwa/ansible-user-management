@@ -1,0 +1,24 @@
+---
+
+user_inventory:
+  - name: ricky.kwan
+    active: true
+    rel_uid: 1
+
+
+# group_inventory:
+#   - name: (req)
+#     gid: (req)
+#     present: (opt)
+#     absent: (opt)
+
+# user_inventory:
+#   - name: (req)
+#     active: true/false (req)
+#     rel_uid: number (req)
+#     present: list (opt)
+#     absent: list (opt)
+#     password: (req) hashed password? for sudo
+#     sudo: list (of hostgroups) (opt) TODO. This won't support different sudo permissions on classes of servers
+#     authorized_keys: str or list of str (req)
+#     groups: list (first in list is primary) (req)
