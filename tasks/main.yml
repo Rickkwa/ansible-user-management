@@ -5,9 +5,16 @@
     file: users.yml
     name: user_inventory
 
+# TODO: validate entries in user_inventory. Expel and report on the ones that are misconfigured
+# Run once, delegate to localhost
+
 - name: Loop through user inventory and handle users
   include_tasks: "handle_user.yml"
-  # TODO: when the current host is in a host group that the user is targetting (ie. present | diff absent)
   loop: "{{ user_inventory }}"
   loop_control:
     loop_var: current_user
+  when:
+    # Remote host is in at least one group that we're targetting
+    - ((group_names + ['all']) | intersect(item.present | default(['all']))) | length > 0
+    # And, remote host isn't in any group that is an exception
+    - ((group_names + ['all']) | intersect(item.absent | default([]))) | length == 0

@@ -10,6 +10,7 @@
 - name: Configure user's authorized_keys
   authorized_key:
     user: "{{ current_user.name }}"
-    key: "{{ current_user.authorized_keys | join('\n') }}"
+    key: "{{ item }}"
     exclusive: true
+  loop: "{{ current_user.authorized_keys | default([]) }}"
   when: "{{ current_user.active | default(true) }}"
