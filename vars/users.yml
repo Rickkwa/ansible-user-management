@@ -1,27 +1,20 @@
 ---
 
-user_inventory:
+### Template/available fields:
+# um_user_inventory:  # List of users
+#   - name: string (req)  # User's login name
+#     active: bool (opt; default true)  # Defines whether we should run for this user. Set to false to pause.
+#     rel_uid: int (req) # UID relative to this file
+#     present: list (opt; default ['all'])  # List of host groups containing the hosts that the user should be on. TODO: support regex
+#     absent: list (opt; default [])  # List of host groups containing the hosts that the user should not be on. Takes priority over 'present'. TODO: support regex
+#     passwd: string (opt) # Hashed password for account
+#     authorized_keys: list or string (opt) # A single string or list of pubkeys to include in authorized_keys file
+#     groups: list (opt) # A list of groups that the user should belong in
+
+um_user_inventory:
   - name: ricky.kwan
     active: true
     rel_uid: 1
     present:
       - all
     absent: []
-
-
-# group_inventory:
-#   - name: (req)
-#     gid: (req)
-#     present: (opt)
-#     absent: (opt)
-
-# user_inventory:
-#   - name: (req)
-#     active: true/false (req)
-#     rel_uid: number (req)
-#     present: list (opt). Default ['all']
-#     absent: list (opt). Default []
-#     password: (req) hashed password? for sudo
-#     sudo: list (of hostgroups) (opt) TODO. This won't support different sudo permissions on classes of servers
-#     authorized_keys: str or list of str (req)
-#     groups: list (first in list is primary) (req)

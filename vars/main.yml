@@ -1,4 +1,5 @@
 ---
 
-# The UID to start at when creating users
-uid_base: 10000
+# The UID/GID to start at when creating users/groups
+um_uid_base: 10000
+um_gid_base: 10000

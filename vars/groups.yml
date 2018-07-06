@@ -1,1 +1,18 @@
 ---
+
+### Template/available fields:
+# um_group_inventory:
+#   - name: string (req) # Group name
+#     active: bool (opt; default true) # Group is not globally removed
+#     rel_gid: int (req) # GID relative in this inventory list
+#     present: list (opt; default ['all']) # List of host groups containing the hosts that the group should be on
+#     absent: list (opt; default []) # List of host groups containing the hosts that the group should not be on
+#     sudoer: string (opt) # File content for sudoer file associated with this group
+
+um_group_inventory:
+  - name: admin
+    active: true
+    rel_gid: 1
+    present:
+      - all
+    absent: []

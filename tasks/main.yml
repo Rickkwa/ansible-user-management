@@ -3,14 +3,59 @@
 - name: Include user inventory
   include_vars:
     file: users.yml
-    name: user_inventory
 
-# TODO: validate entries in user_inventory. Expel and report on the ones that are misconfigured
+- name: Include group inventory
+  include_vars:
+    file: groups.yml
+
+# TODO?: assert group_inventory and user_inventory are set
+# TODO: validate entries in user/group inventory. Expel/report on the ones that are misconfigured.
 # Run once, delegate to localhost
 
-- name: Loop through user inventory and handle users
+# TODO: ensure this supports many different distro
+- name: Update login.defs to set UID_MAX and GID_MAX to be less than uid_base and gid_base, respectively
+  lineinfile:
+    state: present
+    dest: "/etc/login.defs"
+    regexp: "^{{ item.field }}\\w.*"
+    line: "{{ item.field }}        {{ item.value }}"
+    backup: yes
+  loop:
+    - { field: "UID_MAX", value: "{{ um_base_uid - 1 }}" }
+    - { field: "GID_MAX", value: "{{ um_base_gid - 1 }}" }
+
+- name: Install sudo
+  package:
+    name: sudo
+    state: present
+
+- name: Ensure /etc/sudoers.d/ exists
+  file:
+    path: "/etc/sudoers.d/"
+    state: directory
+    mode: 0644
+
+- name: Enable sudoers.d
+  lineinfile:
+    dest: "/etc/sudoers"
+    line: "#includedir /etc/sudoers.d"
+    state: present
+    validate: "visudo -cf %s"
+
+- name: Loop through group_inventory and handle groups
+  include_tasks: "handle_group.yml"
+  loop: "{{ um_group_inventory }}"
+  loop_control:
+    loop_var: current_group
+  when:
+    # Remote host is in at least one group that we're targetting
+    - ((group_names + ['all']) | intersect(item.present | default(['all']))) | length > 0
+    # And, remote host isn't in any group that is an exception
+    - ((group_names + ['all']) | intersect(item.absent | default([]))) | length == 0
+
+- name: Loop through user_inventory and handle users
   include_tasks: "handle_user.yml"
-  loop: "{{ user_inventory }}"
+  loop: "{{ um_user_inventory }}"
   loop_control:
     loop_var: current_user
   when:
