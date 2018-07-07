@@ -11,9 +11,11 @@
 #     groups: list (opt) # A list of groups that the user should belong in
 
 um_user_inventory:
-  - name: ricky.kwan
-    active: true
+  - name: john.smith
     rel_uid: 1
     present:
       - all
     absent: []
+    passwd: $6$CH4pzUgP$PJHNOCKVcWA5ai0kU5qwTkCeK08sx86T6o9exHz7Ki7zN/ip6pPBecr6RYqCaBNDSVobuzwwREHu8KbgNncxf1
+    groups:
+      - admin

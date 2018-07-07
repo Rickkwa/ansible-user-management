@@ -10,8 +10,9 @@
 
 um_group_inventory:
   - name: admin
-    active: true
     rel_gid: 1
     present:
       - all
     absent: []
+    sudoer: |
+      %admin    ALL=(ALL) ALL

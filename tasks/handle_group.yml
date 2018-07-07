@@ -27,6 +27,7 @@
     - name: Remove group
       group:
         state: absent
+        name: "{{ current_group.name }}"
 
     - name: Remove sudoer file associated with this group
       file:
