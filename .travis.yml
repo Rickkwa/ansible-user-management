@@ -1,18 +1,35 @@
 # Lint ansible
 # Basic tests; on different distros
 
-stages:
-  - lint
-  - test
+language: python
 
-jobs:
-  include:
-    - stage: lint
-      env:
-        - ANSIBLE_VER=2.6.1
-        - ANSIBLE_VER=2.5.2
-      install:
-        - pip install ansible==$ANSIBLE_VER
-        - pip install ansible-lint
-      script:
-        - pwd
+python:
+  - 2.7
+  - 3.6
+
+# stages:
+#   - lint
+#   - test
+
+# jobs:
+#   include:
+#     - stage: lint
+#       env:
+#         - ANSIBLE_VER=2.6.1
+#         - ANSIBLE_VER=2.5.2
+#       install:
+#         - pip install ansible==$ANSIBLE_VER
+#         - pip install ansible-lint
+#       script:
+#         - pwd
+
+env:
+  - ANSIBLE_VER=2.6.1
+  - ANSIBLE_VER=2.5.2
+
+install:
+  - pip install ansible==$ANSIBLE_VER
+  - pip install ansible-lint
+
+script:
+  - echo "OK"
