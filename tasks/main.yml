@@ -47,19 +47,9 @@
   loop: "{{ um_group_inventory }}"
   loop_control:
     loop_var: current_group
-  when:
-    # Remote host is in at least one group that we're targetting
-    - ((group_names + ['all']) | intersect(item.present | default(['all']))) | length > 0
-    # And, remote host isn't in any group that is an exception
-    - ((group_names + ['all']) | intersect(item.absent | default([]))) | length == 0
 
 - name: Loop through user_inventory and handle users
   include_tasks: "handle_user.yml"
   loop: "{{ um_user_inventory }}"
   loop_control:
     loop_var: current_user
-  when:
-    # Remote host is in at least one group that we're targetting
-    - ((group_names + ['all']) | intersect(item.present | default(['all']))) | length > 0
-    # And, remote host isn't in any group that is an exception
-    - ((group_names + ['all']) | intersect(item.absent | default([]))) | length == 0
