@@ -1,5 +1,6 @@
-# Lint ansible
-# Basic tests; on different distros
+
+notifications:
+  email: false
 
 language: python
 
@@ -7,30 +8,13 @@ python:
   - 2.7
   - 3.6
 
-stages:
-  - lint
-  - test
+env:
+  - ANSIBLE_VER=2.6.1
+  - ANSIBLE_VER=2.5.2
 
-jobs:
-  include:
-    - stage: lint
-      env:
-        - ANSIBLE_VER=2.6.1
-        - ANSIBLE_VER=2.5.2
-      install:
-        - pip install ansible==$ANSIBLE_VER
-        - pip install ansible-lint
-      script:
-        - echo "OK"
-        - pwd
+install:
+  - pip install ansible==$ANSIBLE_VER
+  - pip install ansible-lint
 
-# env:
-#   - ANSIBLE_VER=2.6.1
-#   - ANSIBLE_VER=2.5.2
-
-# install:
-#   - pip install ansible==$ANSIBLE_VER
-#   - pip install ansible-lint
-
-# script:
-#   - echo "OK"
+script:
+  - ansible-lint .
