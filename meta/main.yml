@@ -1,0 +1,15 @@
+---
+
+galaxy_info:
+  author: Ricky Kwan
+  description: "User and group management role."
+  license: "MIT"
+  min_ansible_version: 2.5
+  category:
+    - system
+  platforms:
+    - name: Ubuntu
+      versions: all
+    - name: EL
+      versions: all
+  depdendencies: []
