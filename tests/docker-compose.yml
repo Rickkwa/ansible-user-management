@@ -5,22 +5,12 @@ services:
     build:
       context: ./distros
       dockerfile: centos-6.Dockerfile
-    networks:
-      custom:
-        ipv4_address: 172.16.100.1
+    ports:
+      - "2200:22"
 
   centos7:
     build:
       context: ./distros
       dockerfile: centos-7.Dockerfile
-    networks:
-      custom:
-        ipv4_address: 172.16.100.2
-
-networks:
-  custom:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.16.100.1/24
+    ports:
+      - "2201:22"
