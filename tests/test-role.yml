@@ -1,0 +1,7 @@
+---
+
+- hosts: containers
+  include_role:
+    - name: "Run test case {{ test_case }}"
+      include_role:
+        name: "{{ play_dir }}/test-cases/{{ test_case }}.yml"
