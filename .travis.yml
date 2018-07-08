@@ -4,6 +4,10 @@ notifications:
 
 language: python
 
+stages:
+  - lint
+  - test
+
 python: 3.6
 
 env:
