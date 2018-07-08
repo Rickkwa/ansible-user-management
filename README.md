@@ -10,7 +10,7 @@ The role takes on a centralized and flat approach as it contains all user and gr
 Requirements
 ----
 
-* Ansible 2.5+.
+* Ansible 2.5+
 
 User and Group Inventory Variables
 ----
