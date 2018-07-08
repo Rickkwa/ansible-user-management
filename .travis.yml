@@ -4,17 +4,33 @@ notifications:
 
 language: python
 
-python:
-  - 2.7
-  - 3.6
+python: 3.6
 
 env:
   - ANSIBLE_VER=2.6.1
-  - ANSIBLE_VER=2.5.2
+
+sudo: true
+
+services:
+  - docker
+
+before_install:
+  - docker-compose -f tests/docker-compose.yml build
+  - docker-compose -f tests/docker-compose.yml up -d
+  - mkdir -p /etc/ansible/roles
+  - ln -s $TRAVIS_BUILD_DIR /etc/ansible/roles/user_management
 
 install:
   - pip install ansible==$ANSIBLE_VER
-  - pip install ansible-lint
 
 script:
-  - ansible-lint .
+  - echo "OK"
+
+jobs:
+  include:
+    - stage: lint
+      install:
+        - pip install ansible==$ANSIBLE_VER
+        - pip install ansible-lint
+      script:
+        - ansible-lint .
