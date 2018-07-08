@@ -1,32 +1,20 @@
+
 notifications:
   email: false
 
-stages:
-  - lint
-  - testing
+language: python
 
-# install:
-#   - pip install ansible==$ANSIBLE_VER
-#   - pip install ansible-lint
+python:
+  - 2.7
+  - 3.6
 
-# script:
-#   - ansible-lint .
+env:
+  - ANSIBLE_VER=2.6.1
+  - ANSIBLE_VER=2.5.2
 
-jobs:
-  include:
-    - stage: lint
-      language: python
-      python:
-        - 2.7
-        - 3.6
-      env:
-        - ANSIBLE_VER=2.6.1
-        - ANSIBLE_VER=2.5.2
-      install:
-        - pip install ansible==$ANSIBLE_VER
-        - pip install ansible-lint
-      script:
-        - ansible-lint .
-    - stage: testing
-      script:
-        - echo "OK"
+install:
+  - pip install ansible==$ANSIBLE_VER
+  - pip install ansible-lint
+
+script:
+  - ansible-lint .
