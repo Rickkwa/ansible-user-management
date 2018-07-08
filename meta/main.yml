@@ -12,4 +12,10 @@ galaxy_info:
       versions: all
     - name: EL
       versions: all
-  depdendencies: []
+  dependencies: []
+  galaxy_tags:
+    - user
+    - users
+    - management
+    - ssh
+    - system
