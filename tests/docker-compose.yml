@@ -3,16 +3,16 @@ version: '3'
 services:
   centos6:
     build:
-      dockerfile: ./distros/centos-6.Dockerfile
       context: ./distros
+      dockerfile: centos-6.Dockerfile
     networks:
       custom:
         ipv4_address: 10.10.10.1
 
   centos7:
     build:
-      dockerfile: ./distros/centos-7.Dockerfile
       context: ./distros
+      dockerfile: centos-7.Dockerfile
     networks:
       custom:
         ipv4_address: 10.10.10.2
