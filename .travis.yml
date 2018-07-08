@@ -11,25 +11,10 @@ stages:
 python: 3.6
 
 env:
+  - ANSIBLE_VER=2.5.2
   - ANSIBLE_VER=2.6.1
 
 sudo: true
-
-services:
-  - docker
-
-before_install:
-  - docker-compose -f tests/docker-compose.yml build
-  - docker-compose -f tests/docker-compose.yml up -d
-  - sudo mkdir -p /etc/ansible/roles
-  - sudo ln -s $TRAVIS_BUILD_DIR /etc/ansible/roles/user_management
-  - sudo cp -f $TRAVIS_BUILD_DIR/tests/inventory /etc/ansible/hosts
-
-install:
-  - pip install ansible==$ANSIBLE_VER
-
-script:
-  - echo "OK"
 
 jobs:
   include:
@@ -39,3 +24,17 @@ jobs:
         - pip install ansible-lint
       script:
         - ansible-lint .
+
+    - stage: test
+      services:
+        - docker
+      before_install:
+        - docker-compose -f tests/docker-compose.yml build
+        - docker-compose -f tests/docker-compose.yml up -d
+        - sudo mkdir -p /etc/ansible/roles
+        - sudo ln -s $TRAVIS_BUILD_DIR /etc/ansible/roles/user_management
+        - sudo cp -f $TRAVIS_BUILD_DIR/tests/inventory /etc/ansible/hosts
+      install:
+        - pip install ansible==$ANSIBLE_VER
+      script:
+        - echo "OK"
