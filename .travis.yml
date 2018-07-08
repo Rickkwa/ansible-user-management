@@ -8,13 +8,26 @@ python:
   - 2.7
   - 3.6
 
+stages:
+  - lint
+  - testing
+
 env:
   - ANSIBLE_VER=2.6.1
   - ANSIBLE_VER=2.5.2
 
-install:
-  - pip install ansible==$ANSIBLE_VER
-  - pip install ansible-lint
+# install:
+#   - pip install ansible==$ANSIBLE_VER
+#   - pip install ansible-lint
 
-script:
-  - ansible-lint .
+# script:
+#   - ansible-lint .
+
+jobs:
+  include:
+    - stage: lint
+      script:
+        - ansible-lint .
+    - stage: testing
+      script:
+        - echo "OK"
