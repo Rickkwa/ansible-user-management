@@ -2,7 +2,7 @@
 
 galaxy_info:
   author: Ricky Kwan
-  description: "User and group management role."
+  description: "Manages user accounts, groups, and sudoers using a centralized user/group inventory."
   license: "MIT"
   min_ansible_version: 2.5
   category:

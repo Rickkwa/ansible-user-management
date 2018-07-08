@@ -1,14 +1,6 @@
 ---
 
-### Template/available fields:
-# um_user_inventory:
-#   - name: string (req)  # User's login name
-#     rel_uid: int (req) # UID relative in this inventory list
-#     present: list (opt; default ['all'])  # List of host groups containing the hosts that the user should be on. TODO: support regex
-#     absent: list (opt; default [])  # List of host groups containing the hosts that the user should not be on. Takes priority over 'present'. TODO: support regex
-#     passwd: string (opt) # Hashed password for account
-#     authorized_keys: list or string (opt) # A single string or list of pubkeys to include in authorized_keys file
-#     groups: list (opt) # A list of groups that the user should belong in
+# See README.md for inventory format
 
 um_user_inventory:
   - name: john.smith

@@ -1,12 +1,6 @@
 ---
 
-### Template/available fields:
-# um_group_inventory:
-#   - name: string (req) # Group name
-#     rel_gid: int (req) # GID relative in this inventory list
-#     present: list (opt; default ['all']) # List of host groups containing the hosts that the group should be on
-#     absent: list (opt; default []) # List of host groups containing the hosts that the group should not be on
-#     sudoer: string (opt) # File content for sudoer file associated with this group
+# See README.md for inventory format
 
 um_group_inventory:
   - name: admin
