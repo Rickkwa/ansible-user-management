@@ -1,0 +1,33 @@
+---
+
+- name: User should exist
+  when:
+    - ((group_names + ['all']) | intersect(current_user.present | default(['all']))) | length > 0
+    - ((group_names + ['all']) | intersect(current_user.absent | default([]))) | length == 0
+  block:
+    - name: Create user
+      user:
+        state: present
+        name: "{{ current_user.name }}"
+        uid: "{{ um_uid_base + current_user.rel_uid }}"
+        password: "{{ current_user.passwd | default(omit) }}"
+        groups: "{{ current_user.groups | default(omit) }}"
+        system: no
+
+    - name: Configure user's authorized keys
+      authorized_key:
+        user: "{{ current_user.name }}"
+        key: "{{ item }}"
+      loop: "{{ [current_user.authorized_keys | default([])] | flatten}}"
+      when: "{{ current_user.active | default(true) }}"
+
+
+- name: User should not exist
+  when: ((group_names + ['all']) | intersect(current_user.present | default(['all']))) | length <= 0 or
+        ((group_names + ['all']) | intersect(current_user.absent | default([]))) | length > 0
+  block:
+    - name: Remove user + user's home directory
+      user:
+        state: absent
+        name: "{{ current_user.name }}"
+        remove: yes

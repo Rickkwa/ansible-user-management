@@ -1,0 +1,51 @@
+---
+
+- name: Import user inventory
+  include_vars:
+    file: users.yml
+
+- name: Import group inventory
+  include_vars:
+    file: groups.yml
+
+# TODO: ensure this supports many different distro
+- name: Update login.defs to set UID_MAX and GID_MAX to be less than uid_base and gid_base, respectively
+  lineinfile:
+    state: present
+    dest: "/etc/login.defs"
+    regexp: "^{{ item.field }}\\s+.*"
+    line: "{{ item.field }}        {{ item.value }}"
+    backup: yes
+  loop:
+    - { field: "UID_MAX", value: "{{ um_uid_base - 1 }}" }
+    - { field: "GID_MAX", value: "{{ um_gid_base - 1 }}" }
+
+- name: Install sudo
+  package:
+    name: sudo
+    state: present
+
+- name: Ensure /etc/sudoers.d/ exists
+  file:
+    path: "/etc/sudoers.d/"
+    state: directory
+    mode: 0755
+
+- name: Enable sudoers.d
+  lineinfile:
+    dest: "/etc/sudoers"
+    line: "#includedir /etc/sudoers.d"
+    state: present
+    validate: "visudo -cf %s"
+
+- name: Loop through group_inventory and handle groups
+  include_tasks: "handle_group.yml"
+  loop: "{{ um_group_inventory }}"
+  loop_control:
+    loop_var: current_group
+
+- name: Loop through user_inventory and handle users
+  include_tasks: "handle_user.yml"
+  loop: "{{ um_user_inventory }}"
+  loop_control:
+    loop_var: current_user

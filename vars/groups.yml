@@ -1,0 +1,12 @@
+---
+
+# See README.md for inventory format
+
+um_group_inventory:
+  - name: admin
+    rel_gid: 1
+    present:
+      - all
+    absent: []
+    sudoer: |
+      %admin    ALL=(ALL) ALL

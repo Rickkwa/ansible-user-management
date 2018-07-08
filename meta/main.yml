@@ -1,0 +1,15 @@
+---
+
+galaxy_info:
+  author: Ricky Kwan
+  description: "Manages user accounts, groups, and sudoers using a centralized user/group inventory."
+  license: "MIT"
+  min_ansible_version: 2.5
+  category:
+    - system
+  platforms:
+    - name: Ubuntu
+      versions: all
+    - name: EL
+      versions: all
+  depdendencies: []
