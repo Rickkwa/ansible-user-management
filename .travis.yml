@@ -21,9 +21,9 @@ services:
 before_install:
   - docker-compose -f tests/docker-compose.yml build
   - docker-compose -f tests/docker-compose.yml up -d
-  - mkdir -p /etc/ansible/roles && mkdir -p /etc/ansible/inventory
-  - ln -s $TRAVIS_BUILD_DIR /etc/ansible/roles/user_management
-  - cp -f $TRAVIS_BUILD_DIR/tests/inventory /etc/ansible/hosts
+  - sudo mkdir -p /etc/ansible/roles && mkdir -p /etc/ansible/inventory
+  - sudo ln -s $TRAVIS_BUILD_DIR /etc/ansible/roles/user_management
+  - sudo cp -f $TRAVIS_BUILD_DIR/tests/inventory /etc/ansible/hosts
 
 install:
   - pip install ansible==$ANSIBLE_VER
