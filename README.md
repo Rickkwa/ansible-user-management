@@ -3,6 +3,7 @@ Ansible User Management Role
 
 [![Build Status](https://travis-ci.com/Rickkwa/ansible-user-mgmt.svg?branch=master)](https://travis-ci.com/Rickkwa/ansible-user-mgmt)
 [![Ansible Role](https://img.shields.io/ansible/role/d/27347.svg)](https://galaxy.ansible.com/rickkwa/user_management)
+[![license](https://img.shields.io/github/license/Rickkwa/ansible-user-management.svg)](https://github.com/Rickkwa/ansible-user-management/blob/master/LICENSE.md)
 
 Manages user accounts, groups, and sudoers using a centralized user/group inventory.
 
