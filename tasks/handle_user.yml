@@ -19,7 +19,6 @@
         user: "{{ current_user.name }}"
         key: "{{ item }}"
       loop: "{{ [current_user.authorized_keys | default([])] | flatten}}"
-      when: "{{ current_user.active | default(true) }}"
 
 
 - name: User should not exist
