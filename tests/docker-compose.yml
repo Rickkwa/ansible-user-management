@@ -3,7 +3,7 @@ version: '3'
 services:
   centos6:
     build:
-      dockerfile: ./tests/distros/centos-6.Dockerfile
+      dockerfile: ./distros/centos-6.Dockerfile
       context: ./tests/distros
     networks:
       custom:
@@ -11,7 +11,7 @@ services:
 
   centos7:
     build:
-      dockerfile: ./tests/distros/centos-7.Dockerfile
+      dockerfile: ./distros/centos-7.Dockerfile
       context: ./tests/distros
     networks:
       custom:
