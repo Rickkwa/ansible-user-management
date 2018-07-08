@@ -40,3 +40,8 @@ The gorup inventory is a list containing the details of each gorup. This list is
 |present|no|list[str]|`['all']`|List of ansible defined host groups containing the hosts that the group should be on.|
 |absent|no|list[str]|`[]`|List of host groups containing the hosts that the group should not be on. This setting takes precedence over `present`.|
 |sudoer|no|string|omit|File content for the sudoer file associated with this group.|
+
+License
+----
+
+MIT. See [LICENSE](LICENSE.md) for more information.
