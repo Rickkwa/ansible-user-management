@@ -7,7 +7,7 @@ services:
       dockerfile: centos-6.Dockerfile
     networks:
       custom:
-        ipv4_address: 10.10.10.1
+        ipv4_address: 172.16.100.1
 
   centos7:
     build:
@@ -15,7 +15,7 @@ services:
       dockerfile: centos-7.Dockerfile
     networks:
       custom:
-        ipv4_address: 10.10.10.2
+        ipv4_address: 172.16.100.2
 
 networks:
   custom:
@@ -23,4 +23,4 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 10.10.10.1/24
+        - subnet: 172.16.100.1/24
