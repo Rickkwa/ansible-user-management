@@ -7,7 +7,7 @@ Ansible User Management Role
 
 Manages user accounts, groups, and sudoers using a centralized user/group inventory.
 
-The role takes on a centralized and flat approach as it contains all user and group information in one place, as opposed to overriding the user/group inventory on a per host/group basis. When you have to use host_vars/group_vars to give users different access to different systems, there can be some uncertainty if a host belongs to multiple host groups with conflicting user/group inventories. When that happens, it's basically up to Ansible to choose which group has priority. But with the flat and centralized approach that this role uses, you can define exactly which host groups you expect the user/group to be in, and which host groups they should not be in.
+The role takes on a centralized and flat approach. It contains all user and group information in one place, instead of overriding the user/group inventory on a per host/group basis. Using host_vars/group_vars to give users different access to different systems can lead to uncertainty if a host belongs to multiple host groups with conflicting user/group inventories. When that happens, it's up to Ansible to choose which group has priority. With the flat and centralized approach that this role uses, you can define which host groups the user/group should or should not be in.
 
 Requirements
 ----
@@ -19,7 +19,7 @@ User and Group Inventory Variables
 
 ## User
 
-The user inventory is a list containing the details of each user. This list is stored in `vars/users.yml`, and each item of the list is a dict that has the following fields:
+The user inventory is a list containing the details of each user. This list is stored in `vars/users.yml` and each item of the list is a dict that has the following fields:
 
 |Field|Required|Type|Default|Description|
 |---|---|---|---|---|
@@ -33,7 +33,7 @@ The user inventory is a list containing the details of each user. This list is s
 
 ## Group
 
-The gorup inventory is a list containing the details of each gorup. This list is stored in `vars/groups.yml`, and each item of the list is a dict that has the following fields:
+The group inventory is a list containing the details of each group. This list is stored in `vars/groups.yml` and each item of the list is a dict that has the following fields:
 
 |Field|Required|Type|Default|Description|
 |---|---|---|---|---|
