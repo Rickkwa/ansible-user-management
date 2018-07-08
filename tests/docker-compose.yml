@@ -4,7 +4,7 @@ services:
   centos6:
     build:
       dockerfile: ./distros/centos-6.Dockerfile
-      context: ./tests/distros
+      context: ./distros
     networks:
       custom:
         ipv4_address: 10.10.10.1
@@ -12,7 +12,7 @@ services:
   centos7:
     build:
       dockerfile: ./distros/centos-7.Dockerfile
-      context: ./tests/distros
+      context: ./distros
     networks:
       custom:
         ipv4_address: 10.10.10.2
