@@ -38,13 +38,13 @@ install:
 script:
   - ansible-playbook tests/cases/${TEST_CASE}.yml -v
 
-jobs:
-  include:
-    - stage: lint
-      services: []
-      before_install: []
-      install:
-        - pip install ansible==$ANSIBLE_VER
-        - pip install ansible-lint
-      script:
-        - ansible-lint .
+# jobs:
+#   include:
+#     - stage: lint
+#       services: []
+#       before_install: []
+#       install:
+#         - pip install ansible==$ANSIBLE_VER
+#         - pip install ansible-lint
+#       script:
+#         - ansible-lint .
