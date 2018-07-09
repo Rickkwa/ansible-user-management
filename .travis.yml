@@ -27,4 +27,4 @@ install:
   - pip install ansible-lint
 script:
   - ansible-lint .
-  - "for testcase in $(ls tests/cases/); do echo $testcase; ansible-playbook tests/cases/${testcase}.yml -v; done"
+  - "for testcase in $(ls tests/cases/); do echo $testcase; ansible-playbook tests/cases/${testcase} -v; done"
