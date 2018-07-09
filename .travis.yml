@@ -11,10 +11,14 @@ stages:
 python: 3.6
 
 env:
-  global:
-    - ANSIBLE_VER=2.5.2
-  matrix:
-    - TEST_CASE=add-user
+  - ANSIBLE_VER=2.5.2
+  - ANSIBLE_VER=2.6.1
+
+# env:
+#   global:
+#     - ANSIBLE_VER=2.5.2
+#   matrix:
+#     - TEST_CASE=add-user
     # - TEST_CASE=delete-user
     # - TEST_CASE=minimal-fields
 
