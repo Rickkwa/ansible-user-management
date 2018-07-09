@@ -10,25 +10,33 @@ stages:
 
 python: 3.6
 
-env:
-  - ANSIBLE_VER=2.5.2
-  - ANSIBLE_VER=2.6.1
-
 sudo: true
 
-stage: test
+env:
+  global:
+    - ANSIBLE_VER=2.5.2
+  matrix:
+    - TEST_CASE=add-user
+    # - TEST_CASE=delete-user
+    # - TEST_CASE=minimal-fields
+
 services:
   - docker
+
+stage: test
+
 before_install:
   - docker-compose -f tests/docker-compose.yml build
   - docker-compose -f tests/docker-compose.yml up -d
   - sudo mkdir -p /etc/ansible/roles
   - sudo ln -s $TRAVIS_BUILD_DIR /etc/ansible/roles/user_management
   - sudo cp -f $TRAVIS_BUILD_DIR/tests/inventory /etc/ansible/hosts
+
 install:
   - pip install ansible==$ANSIBLE_VER
+
 script:
-  - echo "OK"
+  - ansible-playbook tests/cases/${TEST_CASE}.yml -v
 
 jobs:
   include:

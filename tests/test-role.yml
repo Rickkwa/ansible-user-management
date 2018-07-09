@@ -1,7 +1,7 @@
 ---
 
 - hosts: containers
-  include_role:
+  tasks:
     - name: "Run test case {{ test_case }}"
-      include_role:
-        name: "{{ play_dir }}/test-cases/{{ test_case }}.yml"
+      include_tasks:
+        name: "{{ playbook_dir }}/cases/{{ test_case }}.yml"
