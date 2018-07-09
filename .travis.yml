@@ -10,8 +10,6 @@ stages:
 
 python: 3.6
 
-sudo: true
-
 env:
   global:
     - ANSIBLE_VER=2.5.2
@@ -20,10 +18,12 @@ env:
     # - TEST_CASE=delete-user
     # - TEST_CASE=minimal-fields
 
-services:
-  - docker
+sudo: true
 
 stage: test
+
+services:
+  - docker
 
 before_install:
   - docker-compose -f tests/docker-compose.yml build
