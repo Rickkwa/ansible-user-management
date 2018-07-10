@@ -4,4 +4,4 @@
   tasks:
     - name: "Run test case {{ test_case }}"
       include_tasks:
-        name: "{{ playbook_dir }}/cases/{{ test_case }}.yml"
+        name: "{{ playbook_dir }}/cases/{{ test_case }}"
