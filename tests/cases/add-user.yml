@@ -1,7 +1,7 @@
 ---
 
 - name: Set variables
-  set_facts:
+  set_fact:
     um_uid_base: 10000
     um_gid_base: 10000
     um_group_inventory:
