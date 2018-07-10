@@ -5,13 +5,13 @@
     um_uid_base: 10000
     um_gid_base: 10000
     um_group_inventory:
-      - name: admin
+      - name: customgroup
         rel_gid: 1
         present:
           - all
         absent: []
         sudoer: |
-          %admin    ALL=(ALL) ALL
+          %customgroup    ALL=(ALL) ALL
     um_user_inventory:
       - name: foo
         rel_uid: 1
@@ -20,7 +20,7 @@
         absent: []
         passwd: $6$CH4pzUgP$PJHNOCKVcWA5ai0kU5qwTkCeK08sx86T6o9exHz7Ki7zN/ip6pPBecr6RYqCaBNDSVobuzwwREHu8KbgNncxf1
         groups:
-          - admin
+          - customgroup
       - name: bar
         rel_uid: 2
         present:
@@ -43,7 +43,10 @@
   loop: "{{ um_group_inventory }}"
 
 - name: Verify user 'foo' is in group
-  shell: "id -Gn foo | grep -w admin"
+  shell: "id -Gn foo | grep -w customgroup"
+
+- name: Verify user 'bar' is not in group
+  shell: "! id -Gn bar | grep -w customgroup"
 
 - name: Verify sudoer file exists
   shell: "ls -1 /etc/sudoers.d/ | grep '^rel_gid_1$'"

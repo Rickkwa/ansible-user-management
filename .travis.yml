@@ -17,7 +17,6 @@ services:
 
 before_install:
   - docker-compose -f tests/docker-compose.yml build
-  - docker-compose -f tests/docker-compose.yml up -d
   - sudo mkdir -p /etc/ansible/roles
   - sudo ln -s $TRAVIS_BUILD_DIR /etc/ansible/roles/user_management
   - sudo cp -f $TRAVIS_BUILD_DIR/tests/inventory /etc/ansible/hosts
@@ -33,5 +32,7 @@ script:
   - |
     for testcase in $(ls tests/cases/); do
       echo -e "\033[35m ========== $testcase ========== \033[0m"
+      docker-compose -f tests/docker-compose.yml up -d
       ansible-playbook tests/test-role.yml --extra-vars="test_case=${testcase}" -v || exit 1
+      docker-compose -f tests/docker-compose.yml down
     done

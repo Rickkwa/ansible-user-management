@@ -5,7 +5,7 @@
     um_uid_base: 10000
     um_gid_base: 10000
     um_group_inventory:
-      - name: admin
+      - name: customgroup
         rel_gid: 1
     um_user_inventory:
       - name: foo
@@ -30,7 +30,7 @@
   loop: "{{ um_group_inventory }}"
 
 - name: Verify user 'foo' is not in group
-  shell: "! id -Gn foo | grep -w admin"
+  shell: "! id -Gn foo | grep -w customgroup"
 
 - name: Verify sudoer file does not exist
   shell: "! ls -1 /etc/sudoers.d/ | grep '^rel_gid_1$'"
