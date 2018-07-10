@@ -25,24 +25,18 @@
         absent:
           - all
 
-- name: Set the users to be removed
-  loop: "{{ um_user_inventory }}"
-  user:
-    name: "{{ item.name }}"
-    uid: "{{ um_uid_base + item.rel_uid }}"
-
-- name: Debug - show existing groups
-  shell: cat /etc/group
-  register: existing_groups
-
-- debug:
-    var: existing_groups.stdout_lines
-
 - name: Set the group to be removed
   loop: "{{ um_group_inventory }}"
   group:
     name: "{{ item.name }}"
     gid: "{{ um_gid_base + item.rel_gid }}"
+
+- name: Set the users to be removed
+  loop: "{{ um_user_inventory }}"
+  user:
+    name: "{{ item.name }}"
+    uid: "{{ um_uid_base + item.rel_uid }}"
+    group: customgroup
 
 
 - name: Run role
