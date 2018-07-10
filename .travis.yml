@@ -30,4 +30,8 @@ install:
   - pip install ansible-lint
 script:
   - ansible-lint .
-  - "for testcase in $(ls tests/cases/); do echo $testcase; ansible-playbook tests/test-role.yml --extra-vars=\"test_case=${testcase}\" -v; done"
+  - |
+    for testcase in $(ls tests/cases/); do
+      echo -e \"\\033[32m ========== $testcase ========== \\033[0m\"
+      ansible-playbook tests/test-role.yml --extra-vars=\"test_case=${testcase}\" -v
+    done
