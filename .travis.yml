@@ -21,6 +21,8 @@ before_install:
   - sudo mkdir -p /etc/ansible/roles
   - sudo ln -s $TRAVIS_BUILD_DIR /etc/ansible/roles/user_management
   - sudo cp -f $TRAVIS_BUILD_DIR/tests/inventory /etc/ansible/hosts
+  # Set host_key_checking = false
+  - echo "W2RlZmF1bHRzXQ0KaG9zdF9rZXlfY2hlY2tpbmcgPSBmYWxzZQ==" | base64 -d > ~/.ansible.cfg
 
 install:
   - sudo apt-get install sshpass
