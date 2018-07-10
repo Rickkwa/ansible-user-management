@@ -39,7 +39,7 @@
   loop: "{{ um_user_inventory }}"
 
 - name: Verify group exists and has correct GID
-  shell: "cut -d: -f3 < <(getent group {{ item.name }}) | grep '^{{ item.rel_gid + um_gid_base }}$'"
+  shell: "getent group {{ item.name }} | cut -d: -f3 | grep '^{{ item.rel_gid + um_gid_base }}$'"
   loop: "{{ um_group_inventory }}"
 
 - name: Verify user 'foo' is in group
