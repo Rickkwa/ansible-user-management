@@ -36,11 +36,11 @@
 
 - name: Verify user exists and has correct UID
   shell: "id -u {{ item.name }} | grep '^{{ item.rel_uid + um_uid_base }}$'"
-  loop: um_user_inventory
+  loop: "{{ um_user_inventory }}"
 
 - name: Verify group exists and has correct GID
   shell: "cut -d: -f3 < <(getent group {{ item.name }}) | grep '^{{ item.rel_gid + um_gid_base }}$'"
-  loop: um_group_inventory
+  loop: "{{ um_group_inventory }}"
 
 - name: Verify user 'foo' is in group
   shell: "id -Gn foo | grep -w admin"
