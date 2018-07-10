@@ -33,4 +33,4 @@
   shell: "! id -Gn foo | grep -w admin"
 
 - name: Verify sudoer file does not exist
-  shell: "! ls -1 /etc/sudoers.d/ | grep '^rel_gid_10001$'"
+  shell: "! ls -1 /etc/sudoers.d/ | grep '^rel_gid_1$'"
