@@ -23,6 +23,7 @@ before_install:
   - sudo cp -f $TRAVIS_BUILD_DIR/tests/inventory /etc/ansible/hosts
 
 install:
+  - sudo apt-get install sshpass
   - pip install ansible==$ANSIBLE_VER
   - pip install ansible-lint
 script:
