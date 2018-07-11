@@ -1,0 +1,7 @@
+---
+
+- name: Remove user + user's home directory
+  user:
+    state: absent
+    name: "{{ current_user.name }}"
+    remove: yes

@@ -1,0 +1,16 @@
+---
+
+- name: Create user
+  user:
+    state: present
+    name: "{{ current_user.name }}"
+    uid: "{{ um_uid_base + current_user.rel_uid }}"
+    password: "{{ current_user.passwd | default(omit) }}"
+    groups: "{{ current_user.groups | default(omit) }}"
+    system: no
+
+- name: Configure user's authorized keys
+  authorized_key:
+    user: "{{ current_user.name }}"
+    key: "{{ item }}"
+  loop: "{{ [current_user.authorized_keys | default([])] | flatten}}"
