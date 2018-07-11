@@ -30,9 +30,9 @@ install:
 script:
   - ansible-lint .
   - |
-    for testcase in $(ls tests/cases/); do
+    for testcase in $(ls tests/cases/*.{yml,yaml}); do
       echo -e "\033[35m ========== $testcase ========== \033[0m"
       docker-compose -f tests/docker-compose.yml up -d
-      ansible-playbook tests/test-role.yml --extra-vars="test_case=${testcase}" -v || exit 1
+      ansible-playbook tests/test-role.yml --extra-vars="test_case=$(basename ${testcase})" -v || exit 1
       docker-compose -f tests/docker-compose.yml down
     done

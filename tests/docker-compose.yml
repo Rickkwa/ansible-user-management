@@ -3,14 +3,14 @@ version: '3'
 services:
   centos6:
     build:
-      context: ./distros
+      context: ./environment
       dockerfile: centos-6.Dockerfile
     ports:
       - "2200:22"
 
   centos7:
     build:
-      context: ./distros
+      context: ./environment
       dockerfile: centos-7.Dockerfile
     ports:
       - "2201:22"

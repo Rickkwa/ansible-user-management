@@ -1,5 +1,10 @@
 ---
 
+### Description
+# Test adding user and group using the minimal set of fields to pass into user/group inventory.
+
+### Setup
+
 - name: Set variables
   set_fact:
     um_uid_base: 10000
@@ -16,10 +21,14 @@
         passwd: $6$CH4pzUgP$PJHNOCKVcWA5ai0kU5qwTkCeK08sx86T6o9exHz7Ki7zN/ip6pPBecr6RYqCaBNDSVobuzwwREHu8KbgNncxf1
 
 
+### Run
+
 - name: Run role
   include_role:
     name: "user_management"
 
+
+### Verification
 
 - name: Verify user exists and has correct UID
   shell: "id -u {{ item.name }} | grep '^{{ item.rel_uid + um_uid_base }}$'"
