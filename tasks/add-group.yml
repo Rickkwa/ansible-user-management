@@ -1,0 +1,15 @@
+---
+
+- name: Create group
+  group:
+    state: present
+    name: "{{ current_group.name }}"
+    gid: "{{ um_gid_base + current_group.rel_gid }}"
+    system: no
+
+- name: Create sudoer file associated with this group
+  when: current_group.sudoer is defined
+  copy:
+    dest: "/etc/sudoers.d/rel_gid_{{ current_group.rel_gid }}"
+    mode: 0440
+    content: "{{ current_group.sudoer }}"

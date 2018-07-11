@@ -1,0 +1,36 @@
+---
+
+- name: Set variables
+  set_fact:
+    um_uid_base: 10000
+    um_gid_base: 10000
+    um_group_inventory:
+      - name: customgroup
+        rel_gid: 1
+    um_user_inventory:
+      - name: foo
+        rel_uid: 1
+        passwd: $6$CH4pzUgP$PJHNOCKVcWA5ai0kU5qwTkCeK08sx86T6o9exHz7Ki7zN/ip6pPBecr6RYqCaBNDSVobuzwwREHu8KbgNncxf1
+      - name: bar
+        rel_uid: 2
+        passwd: $6$CH4pzUgP$PJHNOCKVcWA5ai0kU5qwTkCeK08sx86T6o9exHz7Ki7zN/ip6pPBecr6RYqCaBNDSVobuzwwREHu8KbgNncxf1
+
+
+- name: Run role
+  include_role:
+    name: "user_management"
+
+
+- name: Verify user exists and has correct UID
+  shell: "id -u {{ item.name }} | grep '^{{ item.rel_uid + um_uid_base }}$'"
+  loop: "{{ um_user_inventory }}"
+
+- name: Verify group exists and has correct GID
+  shell: "getent group {{ item.name }} | cut -d: -f3 | grep '^{{ item.rel_gid + um_gid_base }}$'"
+  loop: "{{ um_group_inventory }}"
+
+- name: Verify user 'foo' is not in group
+  shell: "! id -Gn foo | grep -w customgroup"
+
+- name: Verify sudoer file does not exist
+  shell: "! ls -1 /etc/sudoers.d/ | grep '^rel_gid_1$'"

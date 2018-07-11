@@ -38,14 +38,40 @@
     state: present
     validate: "visudo -cf %s"
 
-- name: Loop through group_inventory and handle groups
-  include_tasks: "handle_group.yml"
-  loop: "{{ um_group_inventory }}"
-  loop_control:
-    loop_var: current_group
+- name: Add stuff
+  block:
+    - name: Loop through group_inventory and add groups
+      include_tasks: "add-group.yml"
+      loop: "{{ um_group_inventory }}"
+      loop_control:
+        loop_var: current_group
+      when:
+        - ((group_names + ['all']) | intersect(current_group.present | default(['all']))) | length > 0
+        - ((group_names + ['all']) | intersect(current_group.absent | default([]))) | length == 0
 
-- name: Loop through user_inventory and handle users
-  include_tasks: "handle_user.yml"
-  loop: "{{ um_user_inventory }}"
-  loop_control:
-    loop_var: current_user
+    - name: Loop through user_inventory and add users
+      include_tasks: "add-user.yml"
+      loop: "{{ um_user_inventory }}"
+      loop_control:
+        loop_var: current_user
+      when:
+        - ((group_names + ['all']) | intersect(current_user.present | default(['all']))) | length > 0
+        - ((group_names + ['all']) | intersect(current_user.absent | default([]))) | length == 0
+
+- name: Remove stuff
+  block:
+    - name: Loop through user_inventory and remove users
+      include_tasks: "remove-user.yml"
+      loop: "{{ um_user_inventory }}"
+      loop_control:
+        loop_var: current_user
+      when: ((group_names + ['all']) | intersect(current_user.present | default(['all']))) | length <= 0 or
+            ((group_names + ['all']) | intersect(current_user.absent | default([]))) | length > 0
+
+    - name: Loop through group_inventory and remove groups
+      include_tasks: "remove-group.yml"
+      loop: "{{ um_group_inventory }}"
+      loop_control:
+        loop_var: current_group
+      when: ((group_names + ['all']) | intersect(current_group.present | default(['all']))) | length <= 0 or
+            ((group_names + ['all']) | intersect(current_group.absent | default([]))) | length > 0
