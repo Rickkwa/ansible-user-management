@@ -2,7 +2,13 @@
 
 ## New Remote Environment
 
-If you want to test on a new container containing whatever distro/environment, create a file in `environments/<name>.Dockerfile`. Then in `docker-compose.yml`, add this environment as a new container using a new port. Then simply add the environment into the ansible inventory file, specifying the environment name as the node name, and set the ansible magic variables `ansible_host=127.0.0.1`, `ansible_port=`, `ansible_user=`, `ansible_ssh_pass=`, `ansible_python_interpreter=` as needed.
+If you want to test on a new container containing whatever distro/environment, create a file in `environments/<name>.Dockerfile`.
+
+* The image should have python installed
+* The image should run ssh port 22
+* You can set the user and password as you wish, and use ansible's `ansible_user` and `ansible_ssh_pass` variable
+
+Then in `docker-compose.yml`, add this environment as a new container using a new port. Then simply add the environment into the ansible inventory file, specifying the environment name as the node name, and set the ansible variables `ansible_host=127.0.0.1`, `ansible_port=`, `ansible_user=`, `ansible_ssh_pass=`, `ansible_python_interpreter=` as needed.
 
 ## New Test Case
 
