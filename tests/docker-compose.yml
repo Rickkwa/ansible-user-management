@@ -21,3 +21,10 @@ services:
       dockerfile: ubuntu16.04.Dockerfile
     ports:
       - "2202:22"
+
+  fedora27:
+    build:
+      context: ./environments
+      dockerfile: fedora27.Dockerfile
+    ports:
+      - "2203:22"
