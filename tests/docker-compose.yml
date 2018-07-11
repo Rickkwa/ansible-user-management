@@ -14,3 +14,10 @@ services:
       dockerfile: centos-7.Dockerfile
     ports:
       - "2201:22"
+
+  ubuntu16:
+    build:
+      context: ./environments
+      dockerfile: ubuntu16.04.Dockerfile
+    ports:
+      - "2202:22"
