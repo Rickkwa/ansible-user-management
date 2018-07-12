@@ -14,8 +14,8 @@ sudo: true
 
 stages:
   - lint
-  - dry-run
   - test
+  - non-functional-test
 
 services:
   - docker
@@ -50,13 +50,19 @@ jobs:
       before_install: []
       script:
         - ansible-lint .
+      allow_failures: true
+      # TODO: see if I can make this allow_failures
 
-    - stage: dry-run
-      script:
-        - docker-compose -f tests/docker-compose.yml up -d
-        - ansible-playbook tests/test-role.yml --extra-vars="test_case=add-user-group.yml" --check
+    # Stages:
+      # - lint
+      # - test (functionality)
+      # - non-functional-test (dry-run, idempotency). Only happens if functionality works
+    # - stage: dry-run
+    #   script:
+    #     - docker-compose -f tests/docker-compose.yml up -d
+    #     - ansible-playbook tests/test-role.yml --extra-vars="test_case=add-user-group.yml" --check
 
-    - stage: test
+    - stage: non-functional-test
       # Idempotency test
       script:
         - docker-compose -f tests/docker-compose.yml up -d
