@@ -1,5 +1,10 @@
 ---
 
+### Description
+# Test setting absent to 'all' for both user and groups.
+
+### Setup
+
 - name: Set variables
   set_fact:
     um_uid_base: 10000
@@ -39,10 +44,14 @@
     group: customgroup
 
 
+### Run
+
 - name: Run role
   include_role:
     name: "user_management"
 
+
+### Verification
 
 - name: Verify users don't exist
   shell: "! id {{ item.name }}"

@@ -8,7 +8,6 @@
   include_vars:
     file: groups.yml
 
-# TODO: ensure this supports many different distro
 - name: Update login.defs to set UID_MAX and GID_MAX to be less than uid_base and gid_base, respectively
   lineinfile:
     state: present
