@@ -12,6 +12,11 @@ env:
 
 sudo: true
 
+stages:
+  - lint
+  - dry-run
+  - test
+
 services:
   - docker
 
@@ -29,7 +34,6 @@ install:
   - pip install ansible-lint
 
 script:
-  - ansible-lint .
   - |
     for testcase in $(ls tests/cases/*.{yml,yaml}); do
       echo -e "\033[35m ===================================================== \033[0m"
@@ -39,3 +43,14 @@ script:
       ansible-playbook tests/test-role.yml --extra-vars="test_case=$(basename ${testcase})" -v || exit 1
       docker-compose -f tests/docker-compose.yml down
     done
+
+jobs:
+  include:
+    - stage: lint
+      before_install: []
+      script:
+        - ansible-lint .
+
+    - stage: dry-run
+      script:
+        - ansible-playbook tests/test-role.yml --extra-vars="test_case=add-user-group.yml" --check
