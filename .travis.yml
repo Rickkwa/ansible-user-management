@@ -53,4 +53,12 @@ jobs:
 
     - stage: dry-run
       script:
+        - docker-compose -f tests/docker-compose.yml up -d
         - ansible-playbook tests/test-role.yml --extra-vars="test_case=add-user-group.yml" --check
+
+    - stage: test
+      # Idempotency test
+      script:
+        - docker-compose -f tests/docker-compose.yml up -d
+        - ansible-playbook tests/test-role.yml --extra-vars="test_case=add-user-group.yml"
+        - ansible-playbook tests/test-role.yml --extra-vars="test_case=add-user-group.yml" | grep "changed=" | grep -v "changed=0"
