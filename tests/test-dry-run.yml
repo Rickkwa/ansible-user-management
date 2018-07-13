@@ -1,26 +1,34 @@
 ---
 
 - hosts: containers
-  vars:
-    um_uid_base: 10000
-    um_gid_base: 10000
-    um_group_inventory:
-      - name: customgroup
-        rel_gid: 1
-        present: ['all']
-        absent: "{{ ['all'] if action == 'remove' else [] }}"
-        sudoer: |
-          %customgroup    ALL=(ALL) ALL
-    um_user_inventory:
-      - name: foo
-        rel_uid: 1
-        present: ['all']
-        absent: "{{ ['all'] if action == 'remove' else [] }}"
-        groups:
-          - customgroup
-      - name: bar
-        rel_uid: 2
-        present:
-          - all
-  roles:
-    - user_management
+  tasks:
+    - name: Set user/group inventory
+      set_fact:
+        um_uid_base: 10000
+        um_gid_base: 10000
+        um_group_inventory:
+          - name: customgroup
+            rel_gid: 1
+            present: ['all']
+            absent:
+              - "{{ 'all' if operation == 'remove' else '' }}"
+            sudoer: |
+              %customgroup    ALL=(ALL) ALL
+        um_user_inventory:
+          - name: foo
+            rel_uid: 1
+            present: ['all']
+            absent:
+              - "{{ 'all' if operation == 'remove' else '' }}"
+            groups:
+              - customgroup
+          - name: bar
+            rel_uid: 2
+            present:
+              - all
+            absent:
+              - "{{ 'all' if operation == 'remove' else '' }}"
+
+    - name: Run role
+      import_role:
+        name: user_management
