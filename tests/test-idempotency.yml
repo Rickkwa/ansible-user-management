@@ -8,14 +8,14 @@
       - name: customgroup
         rel_gid: 1
         present: ['all']
-        absent: "{{ ['all'] if action == 'remove' else [] }}"
+        absent: "{{ ['all'] if operation == 'remove' else [] }}"
         sudoer: |
           %customgroup    ALL=(ALL) ALL
     um_user_inventory:
       - name: foo
         rel_uid: 1
         present: ['all']
-        absent: "{{ ['all'] if action == 'remove' else [] }}"
+        absent: "{{ ['all'] if operation == 'remove' else [] }}"
         groups:
           - customgroup
       - name: bar

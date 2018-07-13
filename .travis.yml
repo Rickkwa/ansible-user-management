@@ -60,28 +60,28 @@ jobs:
       before_script:
         - docker-compose -f tests/docker-compose.yml up -d
       script:
-        - ansible-playbook tests/test-dry-run.yml --extra-vars="action=add" --check --diff
+        - ansible-playbook tests/test-dry-run.yml --extra-vars="operation=add" --check --diff
 
     # Ensure check mode works for removing users/groups
     - stage: non-functional-test
       before_script:
         - docker-compose -f tests/docker-compose.yml up -d
       script:
-        - ansible-playbook tests/test-dry-run.yml --extra-vars="action=remove" --check --diff
+        - ansible-playbook tests/test-dry-run.yml --extra-vars="operation=remove" --check --diff
 
     # Idempotency test for adding users/groups
     - stage: non-functional-test
       before_script:
         - docker-compose -f tests/docker-compose.yml up -d
-        - ansible-playbook tests/test-idempotency.yml --extra-vars="action=add"
+        - ansible-playbook tests/test-idempotency.yml --extra-vars="operation=add"
       script:
-        - '! ansible-playbook tests/test-idempotency.yml --extra-vars="action=add" 1>&2 | grep "changed=" | grep -v "changed=0"'
+        - '! ansible-playbook tests/test-idempotency.yml --extra-vars="operation=add" 1>&2 | grep "changed=" | grep -v "changed=0"'
 
     # Idempotency test for removing users/groups
     - stage: non-functional-test
       before_script:
         - docker-compose -f tests/docker-compose.yml up -d
-        - ansible-playbook tests/test-idempotency.yml --extra-vars="action=add"
-        - ansible-playbook tests/test-idempotency.yml --extra-vars="action=remove"
+        - ansible-playbook tests/test-idempotency.yml --extra-vars="operation=add"
+        - ansible-playbook tests/test-idempotency.yml --extra-vars="operation=remove"
       script:
-        - '! ansible-playbook tests/test-idempotency.yml --extra-vars="action=remove" 1>&2 | grep "changed=" | grep -v "changed=0"'
+        - '! ansible-playbook tests/test-idempotency.yml --extra-vars="operation=remove" 1>&2 | grep "changed=" | grep -v "changed=0"'
