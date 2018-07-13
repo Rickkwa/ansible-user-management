@@ -12,6 +12,11 @@ env:
 
 sudo: true
 
+stages:
+  - lint
+  - test
+  - non-functional-test
+
 services:
   - docker
 
@@ -29,7 +34,6 @@ install:
   - pip install ansible-lint
 
 script:
-  - ansible-lint .
   - |
     for testcase in $(ls tests/cases/*.{yml,yaml}); do
       echo -e "\033[35m ===================================================== \033[0m"
@@ -39,3 +43,45 @@ script:
       ansible-playbook tests/test-role.yml --extra-vars="test_case=$(basename ${testcase})" -v || exit 1
       docker-compose -f tests/docker-compose.yml down
     done
+
+jobs:
+  allow_failures:
+    - script:
+        - ansible-lint -p .
+
+  include:
+    - stage: lint
+      before_install: []
+      script:
+        - ansible-lint -p .
+
+    # Ensure check mode works for adding users/groups
+    - stage: non-functional-test
+      before_script:
+        - docker-compose -f tests/docker-compose.yml up -d
+      script:
+        - ansible-playbook tests/test-dry-run.yml --extra-vars="action=add" --check --diff
+
+    # Ensure check mode works for removing users/groups
+    - stage: non-functional-test
+      before_script:
+        - docker-compose -f tests/docker-compose.yml up -d
+      script:
+        - ansible-playbook tests/test-dry-run.yml --extra-vars="action=remove" --check --diff
+
+    # Idempotency test for adding users/groups
+    - stage: non-functional-test
+      before_script:
+        - docker-compose -f tests/docker-compose.yml up -d
+        - ansible-playbook tests/test-idempotency.yml --extra-vars="action=add"
+      script:
+        - '! ansible-playbook tests/test-idempotency.yml --extra-vars="action=add" 1>&2 | grep "changed=" | grep -v "changed=0"'
+
+    # Idempotency test for removing users/groups
+    - stage: non-functional-test
+      before_script:
+        - docker-compose -f tests/docker-compose.yml up -d
+        - ansible-playbook tests/test-idempotency.yml --extra-vars="action=add"
+        - ansible-playbook tests/test-idempotency.yml --extra-vars="action=remove"
+      script:
+        - '! ansible-playbook tests/test-idempotency.yml --extra-vars="action=remove" 1>&2 | grep "changed=" | grep -v "changed=0"'
