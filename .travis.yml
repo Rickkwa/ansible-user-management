@@ -50,13 +50,13 @@ jobs:
       before_install: []
       script:
         - ansible-lint .
-      allow_failures: true
-      # TODO: Test it by purposely introducing a lint error
 
-    # - stage: non-functional-test
-    #   script:
-    #     - docker-compose -f tests/docker-compose.yml up -d
-    #     - ansible-playbook tests/test-role.yml --extra-vars="test_case=add-user-group.yml" --check
+    # Ensure check mode works
+    - stage: non-functional-test
+      before_script:
+        - docker-compose -f tests/docker-compose.yml up -d
+      script:
+        - ansible-playbook tests/test-dry-run.yml --check --diff
 
     # Idempotency test
     - stage: non-functional-test

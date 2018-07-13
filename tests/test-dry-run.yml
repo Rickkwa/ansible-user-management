@@ -1,0 +1,26 @@
+---
+
+- hosts: containers
+  vars:
+    um_uid_base: 10000
+    um_gid_base: 10000
+    um_group_inventory:
+      - name: customgroup
+        rel_gid: 1
+        present: ['all']
+        absent: []
+        sudoer: |
+          %customgroup    ALL=(ALL) ALL
+    um_user_inventory:
+      - name: foo
+        rel_uid: 1
+        present: ['all']
+        absent: []
+        groups:
+          - customgroup
+      - name: bar
+        rel_uid: 2
+        present:
+          - all
+  roles:
+    - user_management

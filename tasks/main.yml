@@ -1,8 +1,7 @@
 ---
 
-# - name: Import user inventory
-  # include_vars:
-- include_vars:
+- name: Import user inventory
+  include_vars:
     file: users.yml
 
 - name: Import group inventory
@@ -24,6 +23,7 @@
   package:
     name: sudo
     state: present
+  when: not ansible_check_mode
 
 - name: Ensure /etc/sudoers.d/ exists
   file:
@@ -37,6 +37,7 @@
     line: "#includedir /etc/sudoers.d"
     state: present
     validate: "visudo -cf %s"
+  when: not ansible_check_mode
 
 - name: Add stuff
   block:
