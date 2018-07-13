@@ -48,6 +48,7 @@ jobs:
   allow_failures:
     - script:
         - ansible-lint -p .
+
   include:
     - stage: lint
       before_install: []
