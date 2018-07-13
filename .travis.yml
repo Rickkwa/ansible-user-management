@@ -45,32 +45,41 @@ script:
     done
 
 jobs:
+  allow_failures:
+    - script: ansible-lint .
   include:
     - stage: lint
       before_install: []
       script:
         - ansible-lint .
 
-    # Ensure check mode works
+    # Ensure check mode works for adding users/groups
     - stage: non-functional-test
       before_script:
         - docker-compose -f tests/docker-compose.yml up -d
       script:
-        - ansible-playbook tests/test-dry-run.yml --check --diff
+        - ansible-playbook tests/test-dry-run.yml --extra-vars="action=add" --check --diff
 
-    # Idempotency test
+    # Ensure check mode works for removing users/groups
     - stage: non-functional-test
       before_script:
         - docker-compose -f tests/docker-compose.yml up -d
-        - ansible-playbook tests/test-idempotency.yml --extra-vars="action=add" > /dev/null
+      script:
+        - ansible-playbook tests/test-dry-run.yml --extra-vars="action=remove" --check --diff
+
+    # Idempotency test for adding users/groups
+    - stage: non-functional-test
+      before_script:
+        - docker-compose -f tests/docker-compose.yml up -d
+        - ansible-playbook tests/test-idempotency.yml --extra-vars="action=add"
       script:
         - '! ansible-playbook tests/test-idempotency.yml --extra-vars="action=add" 1>&2 | grep "changed=" | grep -v "changed=0"'
 
-    # Idempotency test
+    # Idempotency test for removing users/groups
     - stage: non-functional-test
       before_script:
         - docker-compose -f tests/docker-compose.yml up -d
-        - ansible-playbook tests/test-idempotency.yml --extra-vars="action=add" > /dev/null
-        - ansible-playbook tests/test-idempotency.yml --extra-vars="action=remove" > /dev/null
+        - ansible-playbook tests/test-idempotency.yml --extra-vars="action=add"
+        - ansible-playbook tests/test-idempotency.yml --extra-vars="action=remove"
       script:
         - '! ansible-playbook tests/test-idempotency.yml --extra-vars="action=remove" 1>&2 | grep "changed=" | grep -v "changed=0"'

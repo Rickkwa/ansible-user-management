@@ -1,7 +1,8 @@
 ---
 
-- name: Import user inventory
-  include_vars:
+# - name: Import user inventory
+#   include_vars:
+- include_vars:
     file: users.yml
 
 - name: Import group inventory
