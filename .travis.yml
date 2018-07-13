@@ -46,12 +46,13 @@ script:
 
 jobs:
   allow_failures:
-    - script: ansible-lint .
+    - script:
+        - ansible-lint -p .
   include:
     - stage: lint
       before_install: []
       script:
-        - ansible-lint .
+        - ansible-lint -p .
 
     # Ensure check mode works for adding users/groups
     - stage: non-functional-test
