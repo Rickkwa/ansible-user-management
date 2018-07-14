@@ -9,18 +9,22 @@ def test_user_exists_and_uid(host):
     assert user1.uid == 10001
     assert user2.uid == 10002
 
+
 def test_group_exists_and_gid(host):
     group = host.group("customgroup")
     assert group.exists
     assert group.gid == 10001
 
+
 def test_user1_in_group(host):
     user = host.user("foo")
     assert "customgroup" in user.groups
 
+
 def test_user2_not_in_group(host):
     user = host.user("bar")
     assert "customgroup" not in user.groups
+
 
 def test_group_sudoers_file(host):
     file = host.file("/etc/sudoers.d/rel_gid_1")

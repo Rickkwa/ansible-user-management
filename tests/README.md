@@ -13,14 +13,22 @@ Then in `docker-compose.yml`, add this environment as a new container using a ne
 
 ## New Test Case
 
-Create a new test case file in `cases/<test-name>.yml`. Test cases should follow the following principles:
+Test cases consists of 2 components.
 
-* Filename should be meaningful, and use dashes (-) to delimit words.
-* First line of the test case file should contain a description of the test (as comments).
+1. Ansible playbook to prepare and execute the role.
+2. Pytest file to verify the state of the container after running the role.
+
+### Ansible playbook test
+
+Create a new test case file in `cases/<test-name>.yml`. The test case should follow the following principles:
+
+* Filename should be meaningful to the test, using dashes (-) to delimit words.
+* The playbook should have some comments at the top to describe the test.
+* Use `pre_tasks` to do any setup for the test, and use `tasks` to actually execute the role.
 * The test should not rely on variables defined in the role. Instead, the test should override the variables.
-* The test case should be split into 3 parts (with comments in the file indicating each part)
-    * **Setup** stage which prepares your variables, and/or environment
-    * **Run** stage which imports and runs the role
-    * **Verification** stage which checks the changes were made correctly
 
-After creating the test case file under `cases/`, the travis ci should automatically pick up the test case and run it against all environments.
+### Verification using Pytest
+
+Create a new test case spec file in `cases/<test-name>_spec.py`. The `<test-name>` should match the one for the corresponding ansible playbook file so that the CI can associate the two. Make use of the `pytest` testing framework with the `testinfra` plugin to write your verification.
+
+After creating the test case files under `tests/cases/`, the travis ci should automatically pick up the test case and run it against all environments.
