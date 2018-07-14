@@ -1,13 +1,14 @@
 import pytest
 
 
-def test_user_exists_and_uid(host):
-    user1 = host.user("foo")
-    user2 = host.user("bar")
-    assert user1.exists
-    assert user2.exists
-    assert user1.uid == 10001
-    assert user2.uid == 10002
+@pytest.mark.parametrize("user,uid", [
+    ("foo", 10001),
+    ("bar", 10002),
+])
+def test_user_exists_and_uid(host, user, uid):
+    user = host.user(user)
+    assert user.exists
+    assert user.uid == uid
 
 
 def test_group_exists_and_gid(host):
@@ -16,11 +17,13 @@ def test_group_exists_and_gid(host):
     assert group.gid == 10001
 
 
-def test_users_not_in_group(host):
-    user1 = host.user("foo")
-    user2 = host.user("bar")
-    assert "customgroup" not in user1.groups
-    assert "customgroup" not in user2.groups
+@pytest.mark.parametrize("user", [
+    ("foo"),
+    ("bar"),
+])
+def test_users_not_in_group(host, user):
+    user = host.user(user)
+    assert "customgroup" not in user.groups
 
 
 def test_group_sudoers_file_not_exists(host):
