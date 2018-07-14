@@ -30,6 +30,7 @@ before_install:
 
 install:
   - sudo apt-get install sshpass
+  - pip install pytest
   - pip install ansible==$ANSIBLE_VER
   - pip install testinfra==$TESTINFRA_VER
 
@@ -41,7 +42,7 @@ script:
       echo -e "\033[35m ==================================================================== \033[0m"
       docker-compose -f tests/docker-compose.yml up -d
       ansible-playbook tests/cases/$(basename $testcase) -v || true
-      python -u tests/cases/$(basename ${testcase%.*}).spec.py || exit 1
+      py.test --hosts='containers' --ansible-inventory='/etc/ansible/hosts' tests/cases/$(basename ${testcase%.*}).spec.py || exit 1
       docker-compose -f tests/docker-compose.yml down
     done
 

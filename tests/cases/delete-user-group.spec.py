@@ -1,22 +1,12 @@
-import unittest
-import testinfra
+import pytest
 
 
-class Test(unittest.TestCase):
+def test_user_not_exist(host):
+    user1 = host.user("foo")
+    user2 = host.user("bar")
+    assert not user1.exists
+    assert not user2.exists
 
-    def setUp(self):
-        self.host = testinfra.get_host("ansible://containers")
-
-    def test_user_not_exist(self):
-        user1 = self.host.user("foo")
-        user2 = self.host.user("bar")
-        assert not user1.exists
-        assert not user2.exists
-
-    def test_group_not_exist(self):
-        group = self.host.group("customgroup")
-        assert not group.exists
-
-
-if __name__ == "__main__":
-    unittest.main()
+def test_group_not_exist(host):
+    group = host.group("customgroup")
+    assert not group.exists
