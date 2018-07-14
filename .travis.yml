@@ -40,10 +40,10 @@ script:
       echo -e "\033[35m ==================================================================== \033[0m"
       echo -e "\033[35m ===== $(basename ${testcase%.*}) \033[0m"
       echo -e "\033[35m ==================================================================== \033[0m"
-      docker-compose -f tests/docker-compose.yml up -d
+      docker-compose -f tests/docker-compose.yml up -d > /dev/null
       ansible-playbook tests/cases/$(basename $testcase) -v || true
       py.test --hosts='ansible://containers' --ansible-inventory='/etc/ansible/hosts' tests/cases/$(basename ${testcase%.*})_spec.py || exit 1
-      docker-compose -f tests/docker-compose.yml down
+      docker-compose -f tests/docker-compose.yml down > /dev/null
     done
 
 jobs:
