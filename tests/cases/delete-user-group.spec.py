@@ -5,7 +5,7 @@ import testinfra
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.b = testinfra.get_backend("ansible://containers")
+        self.host = testinfra.get_host("ansible://containers")
 
     def test_user_not_exist(self):
         user1 = self.host.user("foo")
