@@ -23,6 +23,6 @@ def test_user2_not_in_group(host):
     assert "customgroup" not in user.groups
 
 def test_group_sudoers_file(host):
-    file = host.file("/etc/sudoers.d/rel_gid_10001")
+    file = host.file("/etc/sudoers.d/rel_gid_1")
     assert file.exists and file.is_file
     assert file.mode == 0o440
