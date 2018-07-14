@@ -5,7 +5,7 @@ import pytest
     ("foo"),
     ("bar"),
 ])
-def test_user_not_exist(host):
+def test_user_not_exist(host, user):
     user = host.user(user)
     assert not user.exists
 
