@@ -4,7 +4,7 @@
 # Test setting absent to 'all' for both user and groups.
 
 - hosts: containers
-  tasks:
+  pre_tasks:
     - name: Set variables
       set_fact:
         um_uid_base: 10000
@@ -43,6 +43,7 @@
         uid: "{{ um_uid_base + item.rel_uid }}"
         group: customgroup
 
+  tasks:
     - name: Run role
       include_role:
         name: "user_management"

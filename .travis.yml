@@ -36,12 +36,12 @@ install:
 script:
   - |
     for testcase in $(ls tests/cases/*.{yml,yaml}); do
-      echo -e "\033[35m ===================================================== \033[0m"
-      echo -e "\033[35m === $testcase \033[0m"
-      echo -e "\033[35m ===================================================== \033[0m"
+      echo -e "\033[35m ==================================================================== \033[0m"
+      echo -e "\033[35m ===== $(basename ${testcase%.*}) \033[0m"
+      echo -e "\033[35m ==================================================================== \033[0m"
       docker-compose -f tests/docker-compose.yml up -d
       ansible-playbook tests/cases/$(basename $testcase) -v || true
-      python tests/cases/$(basename $testcase).spec.py || exit 1
+      python -u tests/cases/$(basename ${testcase%.*}).spec.py || exit 1
       docker-compose -f tests/docker-compose.yml down
     done
 

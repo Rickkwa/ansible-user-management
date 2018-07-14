@@ -4,7 +4,7 @@
 # Test a generic adding of both user and group.
 
 - hosts: containers
-  tasks:
+  pre_tasks:
     - name: Set variables
       set_fact:
         um_uid_base: 10000
@@ -33,6 +33,7 @@
             absent: []
             passwd: $6$CH4pzUgP$PJHNOCKVcWA5ai0kU5qwTkCeK08sx86T6o9exHz7Ki7zN/ip6pPBecr6RYqCaBNDSVobuzwwREHu8KbgNncxf1
 
+  tasks:
     - name: Run role
       include_role:
         name: "user_management"

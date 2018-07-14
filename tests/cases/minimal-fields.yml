@@ -4,7 +4,7 @@
 # Test adding user and group using the minimal set of fields to pass into user/group inventory.
 
 - hosts: containers
-  tasks:
+  pre_tasks:
     - name: Set variables
       set_fact:
         um_uid_base: 10000
@@ -20,6 +20,7 @@
             rel_uid: 2
             passwd: $6$CH4pzUgP$PJHNOCKVcWA5ai0kU5qwTkCeK08sx86T6o9exHz7Ki7zN/ip6pPBecr6RYqCaBNDSVobuzwwREHu8KbgNncxf1
 
+  tasks:
     - name: Run role
       include_role:
         name: "user_management"
