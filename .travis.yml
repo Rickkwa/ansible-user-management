@@ -7,8 +7,8 @@ language: python
 python: 3.6
 
 env:
-  - ANSIBLE_VER=2.5.2
-  - ANSIBLE_VER=2.6.1
+  - ANSIBLE_VER=2.5.2 TESTINFRA_VER=1.14.0
+  - ANSIBLE_VER=2.6.1 TESTINFRA_VER=1.14.0
 
 sudo: true
 
@@ -31,7 +31,7 @@ before_install:
 install:
   - sudo apt-get install sshpass
   - pip install ansible==$ANSIBLE_VER
-  - pip install ansible-lint
+  - pip install testinfra==$TESTINFRA_VER
 
 script:
   - |
@@ -40,7 +40,8 @@ script:
       echo -e "\033[35m === $testcase \033[0m"
       echo -e "\033[35m ===================================================== \033[0m"
       docker-compose -f tests/docker-compose.yml up -d
-      ansible-playbook tests/test-role.yml --extra-vars="test_case=$(basename ${testcase})" -v || exit 1
+      ansible-playbook tests/cases/$(basename $testcase) -v || true
+      python tests/cases/$(basename $testcase).spec.py || exit 1
       docker-compose -f tests/docker-compose.yml down
     done
 
@@ -52,6 +53,8 @@ jobs:
   include:
     - stage: lint
       before_install: []
+      install:
+        - pip install ansible-lint
       script:
         - ansible-lint -p .
 
