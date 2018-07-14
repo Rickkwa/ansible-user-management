@@ -42,7 +42,7 @@ script:
       echo -e "\033[35m ==================================================================== \033[0m"
       docker-compose -f tests/docker-compose.yml up -d
       ansible-playbook tests/cases/$(basename $testcase) -v || true
-      py.test --hosts='containers' --ansible-inventory='/etc/ansible/hosts' tests/cases/$(basename ${testcase%.*}).spec.py || exit 1
+      py.test --hosts='containers' --ansible-inventory='/etc/ansible/hosts' tests/cases/$(basename ${testcase%.*})_spec.py || exit 1
       docker-compose -f tests/docker-compose.yml down
     done
 
