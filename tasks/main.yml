@@ -2,11 +2,11 @@
 
 - name: Import user inventory
   include_vars:
-    file: users.yml
+    file: "{{ um_user_inventory_file }}"
 
 - name: Import group inventory
   include_vars:
-    file: groups.yml
+    file: "{{ um_group_inventory_file }}"
 
 - name: Update login.defs to set UID_MAX and GID_MAX to be less than uid_base and gid_base, respectively
   lineinfile:
