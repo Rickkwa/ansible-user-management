@@ -21,4 +21,4 @@ install:
   - pip install docker-py ansible==$ANSIBLE_VER molecule==$MOLECULE_VER
 
 script:
-  - molecule --debug test
+  - molecule test
