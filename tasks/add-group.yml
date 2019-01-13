@@ -5,7 +5,7 @@
     state: present
     name: "{{ current_group.name }}"
     gid: "{{ um_gid_base + current_group.rel_gid }}"
-    system: no
+    system: false
 
 - name: Create sudoer file associated with this group
   when: current_group.sudoer is defined
