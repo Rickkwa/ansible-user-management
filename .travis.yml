@@ -7,85 +7,22 @@ language: python
 python: 3.6
 
 env:
-  - ANSIBLE_VER=2.5.2 TESTINFRA_VER=1.14.0
-  - ANSIBLE_VER=2.6.1 TESTINFRA_VER=1.14.0
+  - ANSIBLE_VER=2.5.2 MOLECULE_VER=2.19.0
+  - ANSIBLE_VER=2.6.1 MOLECULE_VER=2.19.0
+  - ANSIBLE_VER=2.7.5 MOLECULE_VER=2.19.0
 
 sudo: true
 
 stages:
-  - lint
   - test
   - non-functional-test
 
 services:
   - docker
 
-before_install:
-  - docker-compose -f tests/docker-compose.yml build
-  - sudo mkdir -p /etc/ansible/roles
-  - sudo ln -s $TRAVIS_BUILD_DIR /etc/ansible/roles/user_management
-  - sudo cp -f $TRAVIS_BUILD_DIR/tests/inventory /etc/ansible/hosts
-  # Set host_key_checking = false
-  - echo "W2RlZmF1bHRzXQ0KaG9zdF9rZXlfY2hlY2tpbmcgPSBmYWxzZQ==" | base64 -d > ~/.ansible.cfg
-
 install:
-  - sudo apt-get install sshpass
-  - pip install pytest
-  - pip install ansible==$ANSIBLE_VER
-  - pip install testinfra==$TESTINFRA_VER
+  - sudo apt-get install -y python-pip libssl-dev
+  - pip install ansible==$ANSIBLE_VER molecule==$MOLECULE_VER
 
 script:
-  - |
-    for testcase in $(ls tests/cases/*.{yml,yaml}); do
-      echo -e "\033[35m ==================================================================== \033[0m"
-      echo -e "\033[35m ===== $(basename ${testcase%.*}) \033[0m"
-      echo -e "\033[35m ==================================================================== \033[0m"
-      docker-compose -f tests/docker-compose.yml up -d &> /dev/null
-      ansible-playbook tests/cases/$(basename $testcase) -v || true
-      py.test --hosts='ansible://containers' --ansible-inventory='/etc/ansible/hosts' tests/cases/$(basename ${testcase%.*})_spec.py || exit 1
-      docker-compose -f tests/docker-compose.yml down &> /dev/null
-    done
-
-jobs:
-  allow_failures:
-    - script:
-        - ansible-lint -p .
-
-  include:
-    - stage: lint
-      before_install: []
-      install:
-        - pip install ansible-lint
-      script:
-        - ansible-lint -p .
-
-    # Ensure check mode works for adding users/groups
-    - stage: non-functional-test
-      before_script:
-        - docker-compose -f tests/docker-compose.yml up -d
-      script:
-        - ansible-playbook tests/test-dry-run.yml --extra-vars="operation=add" --check --diff
-
-    # Ensure check mode works for removing users/groups
-    - stage: non-functional-test
-      before_script:
-        - docker-compose -f tests/docker-compose.yml up -d
-      script:
-        - ansible-playbook tests/test-dry-run.yml --extra-vars="operation=remove" --check --diff
-
-    # Idempotency test for adding users/groups
-    - stage: non-functional-test
-      before_script:
-        - docker-compose -f tests/docker-compose.yml up -d
-        - ansible-playbook tests/test-idempotency.yml --extra-vars="operation=add"
-      script:
-        - '! ansible-playbook tests/test-idempotency.yml --extra-vars="operation=add" | grep "changed=" | grep -v "changed=0"'
-
-    # Idempotency test for removing users/groups
-    - stage: non-functional-test
-      before_script:
-        - docker-compose -f tests/docker-compose.yml up -d
-        - ansible-playbook tests/test-idempotency.yml --extra-vars="operation=add"
-        - ansible-playbook tests/test-idempotency.yml --extra-vars="operation=remove"
-      script:
-        - '! ansible-playbook tests/test-idempotency.yml --extra-vars="operation=remove" | grep "changed=" | grep -v "changed=0"'
+  - molecule test
