@@ -14,7 +14,7 @@
     dest: "/etc/login.defs"
     regexp: "^{{ item.field }}\\s+.*"
     line: "{{ item.field }}        {{ item.value }}"
-    backup: yes
+    backup: true
   loop:
     - { field: "UID_MAX", value: "{{ um_uid_base - 1 }}" }
     - { field: "GID_MAX", value: "{{ um_gid_base - 1 }}" }

@@ -7,7 +7,7 @@
     uid: "{{ um_uid_base + current_user.rel_uid }}"
     password: "{{ current_user.passwd | default(omit) }}"
     groups: "{{ current_user.groups | default(omit) }}"
-    system: no
+    system: false
 
 - name: Configure user's authorized keys
   authorized_key:

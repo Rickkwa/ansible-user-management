@@ -1,0 +1,36 @@
+---
+- name: Converge
+  hosts: all
+  pre_tasks:
+    - name: Set variables
+      set_fact:
+        um_uid_base: 10000
+        um_gid_base: 10000
+        um_group_inventory:
+          - name: customgroup
+            rel_gid: 1
+            present:
+              - all
+            absent: []
+            sudoer: |
+              %customgroup    ALL=(ALL) ALL
+        um_user_inventory:
+          - name: foo
+            rel_uid: 1
+            present:
+              - all
+            absent: []
+            passwd: $6$CH4pzUgP$PJHNOCKVcWA5ai0kU5qwTkCeK08sx86T6o9exHz7Ki7zN/ip6pPBecr6RYqCaBNDSVobuzwwREHu8KbgNncxf1
+            authorized_keys:
+              - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD1vkYIrV5OUl3QgOaQGc2MzBUCF4HZmMNgV2Ky5XDpOO+Mx5TqbrWlbVvIdJXn3/2Hpzv1WZUx7T/PNcAqQX4iy4sUZ3frnQMtPOwPWcsp642OSajRv1qiaWBM2wZ9pfk/+OUf80HJS/vmMk7VHrQ+W5q6VbUck5QOk1Ftc1hgrejCf7VDiq9ui1m769UKIP+Ma4bmdoAJKoUh5ICPYg4JYU4dE4TpSfZbVI4Rad5Sexjv+Qjgi0LB/190v90gLjO8DGERsih0vFrBx1OxaL6qEohtFrZU12gDVwNNjPT0QFTpHR6jaGefybYotdwbYGTiFJQOM221oQwQUJosG5C9 test1
+            groups:
+              - customgroup
+          - name: bar
+            rel_uid: 2
+            present:
+              - all
+            absent: []
+            authorized_keys: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD1vkYIrV5OUl3QgOaQGc2MzBUCF4HZmMNgV2Ky5XDpOO+Mx5TqbrWlbVvIdJXn3/2Hpzv1WZUx7T/PNcAqQX4iy4sUZ3frnQMtPOwPWcsp642OSajRv1qiaWBM2wZ9pfk/+OUf80HJS/vmMk7VHrQ+W5q6VbUck5QOk1Ftc1hgrejCf7VDiq9ui1m769UKIP+Ma4bmdoAJKoUh5ICPYg4JYU4dE4TpSfZbVI4Rad5Sexjv+Qjgi0LB/190v90gLjO8DGERsih0vFrBx1OxaL6qEohtFrZU12gDVwNNjPT0QFTpHR6jaGefybYotdwbYGTiFJQOM221oQwQUJosG5C9 test2
+            passwd: $6$CH4pzUgP$PJHNOCKVcWA5ai0kU5qwTkCeK08sx86T6o9exHz7Ki7zN/ip6pPBecr6RYqCaBNDSVobuzwwREHu8KbgNncxf1
+  roles:
+    - role: ansible-user-management

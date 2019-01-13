@@ -1,9 +1,6 @@
 ---
-
-### Description
-# Test setting absent to 'all' for both user and groups.
-
-- hosts: containers
+- name: Converge
+  hosts: all
   pre_tasks:
     - name: Set variables
       set_fact:
@@ -43,7 +40,10 @@
         uid: "{{ um_uid_base + item.rel_uid }}"
         group: customgroup
 
-  tasks:
-    - name: Run role
-      include_role:
-        name: "user_management"
+    - name: Set the sudoer file to be removed
+      file:
+        path: /etc/sudoers.d/rel_gid_1
+        state: touch
+      changed_when: false
+  roles:
+    - role: ansible-user-management

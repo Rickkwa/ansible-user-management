@@ -1,4 +1,10 @@
+import os
 import pytest
+
+import testinfra.utils.ansible_runner
+
+testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
+    os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
 
 
 @pytest.mark.parametrize("user,uid", [
@@ -31,3 +37,13 @@ def test_group_sudoers_file(host):
     file = host.file("/etc/sudoers.d/rel_gid_1")
     assert file.exists and file.is_file
     assert file.mode == 0o440
+
+
+@pytest.mark.parametrize("user", [
+    "foo",
+    "bar"
+])
+def test_authorized_keys(host, user):
+    file = host.file("/home/{0}/.ssh/authorized_keys".format(user))
+    assert file.exists and file.is_file
+    assert file.size > 0

@@ -4,4 +4,4 @@
   user:
     state: absent
     name: "{{ current_user.name }}"
-    remove: yes
+    remove: true
