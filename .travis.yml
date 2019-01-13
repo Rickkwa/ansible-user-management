@@ -18,7 +18,7 @@ services:
 
 install:
   - sudo apt-get install -y python-pip libssl-dev
-  - pip install ansible==$ANSIBLE_VER molecule==$MOLECULE_VER
+  - pip install docker-py ansible==$ANSIBLE_VER molecule==$MOLECULE_VER
 
 script:
   - molecule --debug test
