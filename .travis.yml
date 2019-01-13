@@ -22,6 +22,6 @@ install:
   - pip install docker-py ansible${ANSIBLE_VER} molecule${MOLECULE_VER}
 
 script:
-  - ansible --verion
+  - ansible --version
   - molecule --version
-  - molecule test
+  - molecule test --all
