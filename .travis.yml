@@ -7,9 +7,10 @@ language: python
 python: 3.6
 
 env:
-  - ANSIBLE_VER=2.5.2 MOLECULE_VER=2.19.0
-  - ANSIBLE_VER=2.6.1 MOLECULE_VER=2.19.0
-  - ANSIBLE_VER=2.7.5 MOLECULE_VER=2.19.0
+  - ANSIBLE_VER="~=2.5.0" MOLECULE_VER="~=2.19.0"
+  - ANSIBLE_VER="~=2.6.0" MOLECULE_VER="~=2.19.0"
+  - ANSIBLE_VER="~=2.7.0" MOLECULE_VER="~=2.19.0"
+  - ANSIBLE_VER=""        MOLECULE_VER=""
 
 sudo: true
 
@@ -18,7 +19,9 @@ services:
 
 install:
   - sudo apt-get install -y python-pip libssl-dev
-  - pip install docker-py ansible==$ANSIBLE_VER molecule==$MOLECULE_VER
+  - pip install docker-py ansible${ANSIBLE_VER} molecule${MOLECULE_VER}
 
 script:
+  - ansible --verion
+  - molecule --version
   - molecule test
