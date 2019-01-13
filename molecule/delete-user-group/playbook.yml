@@ -1,0 +1,49 @@
+---
+- name: Converge
+  hosts: all
+  pre_tasks:
+    - name: Set variables
+      set_fact:
+        um_uid_base: 10000
+        um_gid_base: 10000
+        um_group_inventory:
+          - name: customgroup
+            rel_gid: 1
+            present:
+              - all
+            absent:
+              - all
+        um_user_inventory:
+          - name: foo
+            rel_uid: 1
+            present:
+              - all
+            absent:
+              - all
+          - name: bar
+            rel_uid: 2
+            present:
+              - all
+            absent:
+              - all
+
+    - name: Set the group to be removed
+      loop: "{{ um_group_inventory }}"
+      group:
+        name: "{{ item.name }}"
+        gid: "{{ um_gid_base + item.rel_gid }}"
+
+    - name: Set the users to be removed
+      loop: "{{ um_user_inventory }}"
+      user:
+        name: "{{ item.name }}"
+        uid: "{{ um_uid_base + item.rel_uid }}"
+        group: customgroup
+
+    - name: Set the sudoer file to be removed
+      file:
+        path: /etc/sudoers.d/rel_gid_1
+        state: touch
+      changed_when: false
+  roles:
+    - role: ansible-user-management

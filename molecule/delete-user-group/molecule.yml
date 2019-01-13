@@ -1,0 +1,45 @@
+---
+scenario:
+  name: delete-user-group
+  test_sequence:
+    - lint
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    - verify
+    - destroy
+platforms:
+  - name: centos6
+    image: geerlingguy/docker-centos6-ansible
+    pre_build_image: true
+    pull: true
+    privileged: true
+  - name: centos7
+    image: geerlingguy/docker-centos7-ansible
+    pre_build_image: true
+    pull: true
+    privileged: true
+  - name: ubuntu
+    image: geerlingguy/docker-ubuntu1804-ansible
+    pre_build_image: true
+    pull: true
+    privileged: true
+  - name: fedora
+    image: geerlingguy/docker-fedora29-ansible
+    pre_build_image: true
+    pull: true
+    privileged: true
+driver:
+  name: docker
+lint:
+  name: yamllint
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+verifier:
+  name: testinfra
+  lint:
+    name: flake8
