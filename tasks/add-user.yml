@@ -13,5 +13,5 @@
   authorized_key:
     user: "{{ current_user.name }}"
     key: "{{ item }}"
-  loop: "{{ [current_user.authorized_keys | default([])] | flatten}}"
+  loop: "{{ [current_user.authorized_keys | default([])] | flatten }}"
   when: not ansible_check_mode
