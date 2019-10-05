@@ -22,6 +22,11 @@ platforms:
     pre_build_image: true
     pull: true
     privileged: true
+  - name: centos8
+    image: geerlingguy/docker-centos8-ansible
+    pre_build_image: true
+    pull: true
+    privileged: true
   - name: ubuntu
     image: geerlingguy/docker-ubuntu1804-ansible
     pre_build_image: true
