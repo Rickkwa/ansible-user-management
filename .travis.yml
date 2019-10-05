@@ -7,9 +7,10 @@ language: python
 python: 3.6
 
 env:
-  - ANSIBLE_VER="~=2.5.0" MOLECULE_VER="~=2.20.0"
-  - ANSIBLE_VER="~=2.6.0" MOLECULE_VER="~=2.20.0"
-  - ANSIBLE_VER="~=2.7.0" MOLECULE_VER="~=2.20.0"
+  - ANSIBLE_VER="~=2.5.0" MOLECULE_VER="~=2.22.0"
+  - ANSIBLE_VER="~=2.6.0" MOLECULE_VER="~=2.22.0"
+  - ANSIBLE_VER="~=2.7.0" MOLECULE_VER="~=2.22.0"
+  - ANSIBLE_VER="~=2.8.0" MOLECULE_VER="~=2.22.0"
   - ANSIBLE_VER=""        MOLECULE_VER=""
 
 sudo: true
