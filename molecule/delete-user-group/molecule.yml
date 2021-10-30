@@ -36,8 +36,5 @@ driver:
   name: docker
 provisioner:
   name: ansible
-  log: true
 verifier:
   name: testinfra
-  lint:
-    name: flake8
