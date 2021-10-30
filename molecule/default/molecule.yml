@@ -35,13 +35,8 @@ platforms:
     privileged: true
 driver:
   name: docker
-lint:
-  name: yamllint
 provisioner:
   name: ansible
-  lint:
-    name: ansible-lint
-  log: true
 verifier:
   name: testinfra
   lint:
