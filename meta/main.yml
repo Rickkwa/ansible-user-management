@@ -5,6 +5,8 @@ galaxy_info:
   description: "Manages user accounts, groups, and sudoers using a centralized user/group inventory."
   license: "MIT"
   min_ansible_version: 2.5
+  role_name: user-management
+  namespace: rickkwa
   category:
     - system
   platforms:
