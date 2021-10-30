@@ -1,0 +1,36 @@
+---
+name: Molecule Test
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        ansible_version: ["~=2.5.0", "~=2.6.0", "~=2.7.0", "~=2.8.0", ""]
+
+    env:
+      ANSIBLE_FORCE_COLOR: true
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        env:
+          ANSIBLE_VER: ${{ matrix.ansible_version }}
+          MOLECULE_VER: "~=2.22.0"
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible$ANSIBLE_VER molecule$MOLECULE_VER docker molecule-docker
+      - name: Show versions
+        run: |
+          python --version
+          docker --version
+          ansible --version
+      - name: Test with molecule
+        run: |
+          molecule test --all
